@@ -16,16 +16,35 @@
   }
 }
 
-@layer utilities {
-  .text-responsive {
-    font-size: clamp(15px, 6vw, 40px);
+@media (max-width: 1000px) {
+  .flex-col-1800 {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .text-responsive-skills {
-    font-size: clamp(15px, 4.5vw, 33px);
-  }
+  .photo-small {
+    width: 50vw;
+    height: auto;
+    border-radius: 50%;
+}
 
-  .text-responsive-skills-2 {
-    font-size: clamp(15px, 3vw, 20px)
+.professional-centered {
+  text-align: center;
+}
+
+  .flex-col-1800 .remove-margin-1800 {
+    margin-left: 0;
   }
+}
+
+.text-responsive {
+  font-size: clamp(15px, 6vw, 40px);
+}
+
+.text-responsive-skills {
+  font-size: clamp(15px, 4.5vw, 33px);
+}
+
+.text-responsive-skills-2 {
+  font-size: clamp(15px, 3vw, 20px);
 }
