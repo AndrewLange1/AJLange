@@ -1,14 +1,16 @@
 module.exports = {
-  mode: 'jit',
-  content: [
-      "./src/**/*.{js,jsx,ts,tsx}",
-  ],
-  theme: {
-      extend: {
-          fontFamily: {
-              montserrat: ['Montserrat', 'sans-serif'],
-          },
-      },
-  },
-  plugins: [],
-};
+    content: [
+        "./src/**/*.{js,jsx,ts,tsx}",
+    ],
+    theme: {
+        extend: {
+            fontFamily: {
+                montserrat: ['Montserrat', 'sans-serif'],
+            },
+            colors: {
+                lime: '#50962F',
+            },
+        },
+    },
+    plugins: [],
+  };  

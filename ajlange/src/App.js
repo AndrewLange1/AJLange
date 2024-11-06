@@ -25,7 +25,7 @@ function App() {
           <AboutMe />
         </div>
         <ProffesionalSkills/>
-        {/*<WorkExperience/>*/}
+        <WorkExperience/>
       </div>
     </div>
   );
