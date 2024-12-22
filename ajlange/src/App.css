@@ -23,6 +23,9 @@
   .flex-row-experience-reverse {
     flex-direction: column-reverse;
   }
+  .image-margin{
+    padding-top: 50px;
+  }
   .lime-full {
     width: 100%;
     height: auto; /* Let content dictate height */
