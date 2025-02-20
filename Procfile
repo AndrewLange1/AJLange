@@ -1,1 +1,1 @@
-web: npm start
+web: cd ajlange && npm start
