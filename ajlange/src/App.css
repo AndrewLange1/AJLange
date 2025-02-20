@@ -112,3 +112,49 @@
 .text-responsive-skills-2 {
   font-size: clamp(15px, 3vw, 20px);
 }
+
+@media (max-width: 1000px) {
+  .experience-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .black-line {
+    width: 80%;
+    height: 1px;
+    background-color: black;
+    margin-top: 50px;
+  }
+
+  .gopherMatch {
+    margin-top: 40px;
+  }
+}
+
+@media (min-width: 1001px) {
+  .experience-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: auto;
+  }
+
+  .black-line {
+    width: 1px;
+    height: 350px;
+    background-color: black;
+    position: relative;
+    top: 30px;
+  }
+
+  .project-box {
+    width: 50%;
+  }
+}
+
+.gradient-bg {
+  background: linear-gradient(to right, #186804, #50962F);
+}

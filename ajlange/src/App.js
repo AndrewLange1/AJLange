@@ -3,6 +3,8 @@ import AboutMe from './AboutMe.js';
 import Header from './Header.js';
 import ProffesionalSkills from './ProfessionalSkills.js';
 import WorkExperience from './WorkExperience.js';
+import Projects from './Projects.js';
+import Footer from './Footer.js';
 import { useRef } from 'react';
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
         </div>
         <ProffesionalSkills/>
         <WorkExperience/>
+        <Projects/>
+        <Footer/>
       </div>
     </div>
   );
