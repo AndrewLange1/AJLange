@@ -1,7 +1,7 @@
 import './App.css';
 import { useState, useRef, useEffect } from 'react';
 
-function Header({ onAboutMeClick }) {
+function Header({ onAboutMeClick, onWorkExperienceClick, onProjectsClick, onLinksClick }) {
     const [isMenuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
     const toggleMenu = () => setMenuOpen(!isMenuOpen);
@@ -13,10 +13,8 @@ function Header({ onAboutMeClick }) {
             }
         };
 
-        // Bind the event listener
         document.addEventListener('mousedown', handleClickOutside);
-        
-        // Clean up the event listener on unmount
+
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
@@ -29,13 +27,21 @@ function Header({ onAboutMeClick }) {
             </div>
             <div className="flex-grow flex justify-end mr-[10px]">
                 <div className="flex items-center">
-                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap">About me</div>
+                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap" onClick={onAboutMeClick}>
+                        About me
+                    </div>
                     <div className="ml-[8px] bg-green-500 w-[1.5px] h-[80%]"></div>
-                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap ml-[10px]">Work Experience</div>
+                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap ml-[10px]" onClick={onWorkExperienceClick}>
+                        Work Experience
+                    </div>
                     <div className="ml-[8px] bg-green-500 w-[1.5px] h-[80%]"></div>
-                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap ml-[10px]">Projects</div>
+                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap ml-[10px]" onClick={onProjectsClick}>
+                        Projects
+                    </div>
                     <div className="ml-[8px] bg-green-500 w-[1.5px] h-[80%]"></div>
-                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap ml-[10px]">Links</div>
+                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap ml-[10px]" onClick={onLinksClick}>
+                        Links
+                    </div>
                 </div>
             </div>
             <div className="block md:hidden ml-auto mr-[10px] cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105" onClick={toggleMenu}>
@@ -44,13 +50,20 @@ function Header({ onAboutMeClick }) {
                 <div className="bg-green-700 h-[3px] w-[25px]"></div>
             </div>
 
-            {/* Condensed Menu */}
             {isMenuOpen && (
                 <div ref={menuRef} className="absolute top-10 right-0 bg-white border border-black shadow-lg flex flex-col">
-                    <div className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap" onClick={onAboutMeClick}>About me</div>
-                    <div className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap">Work Experience</div>
-                    <div className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap">Projects</div>
-                    <div className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap">Links</div>
+                    <div className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap" onClick={() => { onAboutMeClick(); setMenuOpen(false); }}>
+                        About me
+                    </div>
+                    <div className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap" onClick={() => { onWorkExperienceClick(); setMenuOpen(false); }}>
+                        Work Experience
+                    </div>
+                    <div className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap" onClick={() => { onProjectsClick(); setMenuOpen(false); }}>
+                        Projects
+                    </div>
+                    <div className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap" onClick={() => { onLinksClick(); setMenuOpen(false); }}>
+                        Links
+                    </div>
                 </div>
             )}
         </div>

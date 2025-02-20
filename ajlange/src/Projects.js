@@ -5,7 +5,7 @@ function ProfessionalSkills() {
         <div className="font-montserrat mt-[20px] flex flex-col items-center justify-center w-full pb-[70px]">
             <div className="md:text-[40px] text-[6vw] max-text-[40px] text-green-800 text-center mt-[30px] text-responsive w-full">
                 PROJECTS
-                <div className="experience-container flex w-full">
+                <div className="experience-container flex w-full justify-between">
                     <div className="project-box flex flex-col items-center text-black">
                         <div className="text-center md:text-[35px] text-[5.5vw] gopherMatch">
                             GopherMatch
