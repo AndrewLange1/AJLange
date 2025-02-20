@@ -14,12 +14,24 @@ function WorkExperience() {
                             <div className="mt-[30px] text-[28px] company-title">TrustworthyGlass</div>
                             <div className="job-title">Web Development Internship</div>
                             <div className="mt-[30px] text-[2.6vw] paragraph-text">
-                                <div>This is just the first one to see how this goes, wish me luck!</div>
-                                <div>This is my bio. I will fill in the text later, but this should be good for now</div>
-                                <div>Let's keep this simple. I am a thug who gets a lot of money</div>
-                                <div>I am also a very decorated rapper, known around the globe for my rapping</div>
-                                <div>Well this sure has been fun. I mog all you motherfuckers -42</div>
-                                <div>Woohoo!! This is my last div!!! Well, this sure has been fun. See ya soon!</div>
+                                <div>
+                                    This past summer I had a web development internship with Trustworthy
+                                </div>
+                                <div>
+                                    Glass. They are a local glass company who had high aspirations for future sites.
+                                </div>
+                                <div>
+                                    Upon my employment there I quickly realized their inefficient
+                                </div>
+                                <div>
+                                    method of buying domain names in bulk, just to have them all forward to
+                                </div>
+                                <div>
+                                    the same main site. Using Search Engine Optimization I was
+                                </div>
+                                <div>
+                                    able to fully design, create, and learn how to hose 11 unique sites. 
+                                </div>
                             </div>
                             <div className="mt-[20px]">
                                 <div className="date-text job-title">May 2024 - August 2024</div>
@@ -40,12 +52,30 @@ function WorkExperience() {
                         <div className="mt-[30px] text-[28px] company-title">Chipotle Mexican Grill</div>
                         <div className="job-title">Shift Manager</div>
                         <div className="mt-[30px] text-[2.6vw] paragraph-text">
-                            <div>This is just the first one to see how this goes, wish me luck!</div>
-                            <div>This is my bio. I will fill in the text later, but this should be good for now</div>
-                            <div>Let's keep this simple. I am a thug who gets a lot of money</div>
-                            <div>I am also a very decorated rapper, known around the globe for my rapping</div>
-                            <div>Well this sure has been fun. I mog all you motherfuckers -42</div>
-                            <div>Woohoo!! This is my last div!!! Well, this sure has been fun. See ya soon!</div>
+                            <div>
+                                For the past 3 years I have worked at Chipotle Mexican Grill.
+                            {/* This is just the first one to see how this goes, wish me luck! */}
+                            </div>
+                            <div>
+                                This experience has taught me to navigate stressful, fast-paced environments.
+                            {/* This is my bio. I will fill in the text later, but this should be good for now */}
+                            </div>
+                            <div>
+                                Exhibiting patience and professionalism while resolving
+                            {/* Let's keep this simple. I am a thug who gets a lot of money */}
+                            </div>
+                            <div>
+                                customer service concerns is a vital aspect of my job. During my time
+                            {/* I am also a very decorated rapper, known around the globe for my rapping */}
+                            </div>
+                            <div>
+                                learning these skills I have been promoted to a manager. It
+                            {/* Well this sure has been fun. I mog all you motherfuckers -42 */}
+                            </div>
+                            <div>
+                                is rewarding getting the opportunity to see my progress get recognition.
+                            {/* Woohoo!! This is my last div!!! Well, this sure has been fun. See ya soon! */}
+                            </div>
                         </div>
                         <div className="mt-[20px]">
                             <div className="date-text job-title">May 2024 - August 2024</div>

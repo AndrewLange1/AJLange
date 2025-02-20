@@ -7,19 +7,19 @@ function ProfessionalSkills() {
             <div className="ml-[20vw] md:w-[300px] w-[39.9vw] max-w-[300px] min-w-[300px] text-green-800 md:text-[33px] text-[4.5vw] max-text-[33px] text-responsive-skills remove-margin-1800 overflow-hidden professional-centered">
                 Professional Skills
                 <div className="flex flex-col text-center justify-center mt-[10px] md:text-[20px] text-[3vw] text-black text-responsive-skills-2">
-                <div>Skill 1</div>
-                <div>Skill 2</div>
-                <div>Skill 3</div>
-                <div>Skill 4</div>
-                <div>Skill 5</div>
-                <div>Skill 6</div>
-                <div>Skill 7</div>
-                <div>Skill 8</div>
-                <div>Skill 9</div>
-                <div>Skill 10</div>
-                <div>Skill 11</div>
-                <div>Skill 12</div>
-                <div>Skill 13</div>
+                <div>Python</div>
+                <div>Java</div>
+                <div>C/C++</div>
+                <div>Javascript</div>
+                <div>C++</div>
+                <div>Node.js</div>
+                <div>React/React Native</div>
+                <div>Web Hosting</div>
+                <div>NumPy</div>
+                <div>Matplotlib</div>
+                <div>Jupyter</div>
+                <div>Jira</div>
+                <div>Microsoft Office Suite</div>
             </div>
             </div>
             <div className="w-full flex items-center justify-center">

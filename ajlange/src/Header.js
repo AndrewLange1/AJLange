@@ -23,7 +23,7 @@ function Header({ onAboutMeClick, onWorkExperienceClick, onProjectsClick, onLink
     return (
         <div className="bg-white h-[40px] border-b border-black flex flex-row items-center font-montserrat text-[20px]">
             <div className="ml-[10px] whitespace-nowrap">
-                Andrew Lange
+                Andrew (AJ) Lange
             </div>
             <div className="flex-grow flex justify-end mr-[10px]">
                 <div className="flex items-center">
