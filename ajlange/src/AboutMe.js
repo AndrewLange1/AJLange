@@ -4,7 +4,7 @@ function AboutMe() {
     return(
         <div className="font-montserrat">
             <div className="md:text-[40px]  text-[6vw] max-text-[40px] text-green-800 text-center mt-[30px] text-responsive">
-                WHO AM I?
+                Fuck You Josh
             </div>
             <div className="md:text-[20px] text-[2.5vw] text-black text-center mt-[20px]">
                 <div>

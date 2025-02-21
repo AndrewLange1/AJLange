@@ -9,7 +9,7 @@ function Header({ onAboutMeClick, onWorkExperienceClick, onProjectsClick, onLink
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setMenuOpen(false); // Close the menu
+                setMenuOpen(false);
             }
         };
 

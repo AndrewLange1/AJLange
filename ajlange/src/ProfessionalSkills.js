@@ -11,7 +11,7 @@ function ProfessionalSkills() {
                 <div>Java</div>
                 <div>C/C++</div>
                 <div>Javascript</div>
-                <div>C++</div>
+                <div>CSS</div>
                 <div>Node.js</div>
                 <div>React/React Native</div>
                 <div>Web Hosting</div>

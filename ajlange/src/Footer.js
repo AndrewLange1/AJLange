@@ -5,8 +5,8 @@ function Footer() {
         <div className="gradient-bg w-full h-[400px] flex flex-col items-center justify-center text-white text-center">
             <div className="text-[45px]">Useful Links</div>
             <div className="mt-[30px] text-[20px]">
-                <a href="https://github.com/AndrewLange1" target="_blank" rel="noopener noreferrer" className="hover:underline">
-                    GitHub: AndrewLange1
+                <a href="mailto:ajlange42d@gmail.com" className="hover:underline">
+                    ajlange42d@gmail.com
                 </a>
             </div>
             <div className="mt-[10px] text-[20px]">
@@ -17,6 +17,11 @@ function Footer() {
             <div className="mt-[10px] text-[20px]">
                 <a href="https://www.mnglass.com" target="_blank" rel="noopener noreferrer" className="hover:underline">
                     www.mnglass.com
+                </a>
+            </div>
+            <div className="mt-[10px] text-[20px]">
+                <a href="https://github.com/AndrewLange1" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    GitHub: AndrewLange1
                 </a>
             </div>
         </div>
