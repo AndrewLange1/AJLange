@@ -10,6 +10,9 @@ module.exports = {
             colors: {
                 lime: '#50962F',
             },
+            screens: {
+                'custom': '850px',
+              },
         },
     },
     plugins: [],

@@ -213,3 +213,8 @@ html, body {
     text-decoration-thickness: 2px;
   }
 }
+
+/* For smaller screens (default, before the breakpoint) */
+.responsive-line {
+    margin: 4px 0; /* Add spacing between lines */
+}
