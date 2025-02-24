@@ -11,7 +11,7 @@ function ProfessionalSkills() {
                         <div className="text-center md:text-[35px] text-[5.5vw]">
                             GopherMatch
                         </div>
-                        <ul className="list-disc list-inside text-start text-[55%] mt-[50px] pl-[20px]">
+                        <ul className="list-disc list-inside text-start md:text-[23px] text-[17px] mt-[50px] pl-[20px]">
                             <li className="mt-[30px]">Roommate finder for UMN students</li>
                             <li className="mt-[30px]">Built with React, Node.js, Express, MySQL</li>
                             <li className="mt-[30px]">Enables profile creation and browsing</li>
@@ -25,7 +25,7 @@ function ProfessionalSkills() {
                         <div className="ml4gw text-center md:text-[35px] text-[5.5vw]">
                             ML4GW
                         </div>
-                        <ul className="list-disc list-inside text-start text-[55%] mt-[50px] pl-[20px]">
+                        <ul className="list-disc list-inside text-start md:text-[23px] text-[17px] mt-[50px] pl-[20px]">
                             <li className="mt-[30px]">Research project through MIT</li>
                             <li className="mt-[30px]">Use NumPy and Matplotlib</li>
                             <li className="mt-[30px]">Generate histograms and box plots</li>
