@@ -10,31 +10,31 @@ function AboutMe() {
             {/* For smaller screens (below 900px) */}
             <div className="custom:hidden text-[17px] text-black text-center mt-[20px]">
                 <div className="responsive-line">
-                    Hey! I'm Andrew Lange, a Computer Science major
+                    Hey! I'm Andrew Lange, a Computer Science
                 </div>
                 <div className="responsive-line">
-                    at the University of Minnesota. I plan on
+                    major at the University of Minnesota.
                 </div>
                 <div className="responsive-line">
-                    pursuing software engineering with an interest
+                    I plan on pursuing software engineering with
                 </div>
                 <div className="responsive-line">
-                    in machine learning. I also enjoy creating
+                    an interest in machine learning. I also
                 </div>
                 <div className="responsive-line">
-                    interactive web applications. This past summer I
+                    enjoy creating interactive web applications.
                 </div>
                 <div className="responsive-line">
-                    interned at Trustworthy Glass as a web
+                    This past summer I interned at Trustworthy Glass
                 </div>
                 <div className="responsive-line">
-                    developer. Outside of classes I am most likely working
+                    as a web developer. Outside of classes I am
                 </div>
                 <div className="responsive-line">
-                    on projects at Social Coding, a campus club
+                    most likely working on projects at Social Coding, a
                 </div>
                 <div className="responsive-line">
-                    or conducting research on campus.
+                    campus club or conducting research.
                 </div>
                 <div className="mt-[30px] h-[1px] w-[90%] items-center bg-black mx-auto"></div>
             </div>
