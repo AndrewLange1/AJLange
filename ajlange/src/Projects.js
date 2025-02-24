@@ -3,7 +3,7 @@ import './App.css';
 
 function ProfessionalSkills() {
     return (
-        <div className="font-montserrat mt-[20px] flex flex-col items-center justify-center w-full pb-[70px]">
+        <div className="font-montserrat mt-[20px] flex flex-col items-center justify-center w-full pb-[70px] bg-white">
             <div className="md:text-[40px] text-[6vw] max-text-[40px] text-green-800 text-center mt-[30px] text-responsive w-full">
                 <div className="projects">PROJECTS</div>
                 <div className="gopher-container flex flex-col items-center w-full justify-between">

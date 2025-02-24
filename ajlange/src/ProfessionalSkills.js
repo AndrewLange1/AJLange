@@ -3,7 +3,7 @@ import photo from './headshot.png';
 
 function ProfessionalSkills() {
     return (
-        <div className="font-montserrat mt-[20px] flex flex-row flex-col-1800">
+        <div className="font-montserrat mt-[20px] flex flex-row flex-col-1800 bg-white">
             <div className="ml-[20vw] md:w-[300px] w-[39.9vw] max-w-[300px] min-w-[300px] text-green-800 md:text-[33px] text-[25px] remove-margin-1800 overflow-hidden professional-centered">
                 Professional Skills
                 <div className="flex flex-col text-center justify-center mt-[10px] md:text-[20px] text-[17px] text-black">

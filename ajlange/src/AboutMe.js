@@ -2,7 +2,7 @@ import './App.css';
 
 function AboutMe() {
     return (
-        <div className="font-montserrat">
+        <div className="font-montserrat bg-white">
             <div className="custom:text-[40px] text-[6vw] max-text-[40px] text-green-800 text-center mt-[30px] text-responsive">
                 WHO AM I?
             </div>
