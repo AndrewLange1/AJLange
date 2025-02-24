@@ -25,16 +25,19 @@ function AboutMe() {
                     enjoy creating interactive web applications.
                 </div>
                 <div className="responsive-line">
-                    This past summer I interned at Trustworthy Glass
+                    This past summer I interned at Trustworthy
                 </div>
                 <div className="responsive-line">
-                    as a web developer. Outside of classes I am
+                    Glass as a web developer. Outside of classes
                 </div>
                 <div className="responsive-line">
-                    most likely working on projects at Social Coding, a
+                    I am most likely working on projects at Social
                 </div>
                 <div className="responsive-line">
-                    campus club or conducting research.
+                    Coding, a campus club, or conducting
+                </div>
+                <div className="responsive-line">
+                    research on campus.
                 </div>
                 <div className="mt-[30px] h-[1px] w-[90%] items-center bg-black mx-auto"></div>
             </div>
