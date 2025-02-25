@@ -12,8 +12,9 @@ module.exports = {
             },
             screens: {
                 'custom': '850px',
-              },
+                'custom2': '1050px',
+            },
         },
     },
     plugins: [],
-  };  
+};

@@ -218,3 +218,11 @@ html, body {
 .responsive-line {
     margin: 4px 0; /* Add spacing between lines */
 }
+
+/* Custom breakpoint for 900px */
+@media (max-width: 1900px) {
+  /* Flex container to switch from row to column */
+  .custom-flex-row {
+      flex-direction: column;
+  }
+}
