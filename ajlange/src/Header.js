@@ -27,7 +27,7 @@ function Header({ onAboutMeClick, onWorkExperienceClick, onProjectsClick, onLink
             </div>
             <div className="flex-grow flex justify-end mr-[10px]">
                 <div className="flex items-center">
-                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap" onClick={onAboutMeClick}>
+                    <div className="hover:text-green-800 cursor-pointer whitespace-nowrap" onClick={() => { console.log('About Me clicked'); onAboutMeClick(); }}>
                         About me
                     </div>
                     <div className="ml-[8px] bg-green-500 w-[1.5px] h-[80%]"></div>

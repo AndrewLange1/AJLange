@@ -1,17 +1,20 @@
+import { useRef } from 'react';
 import './App.css';
 import logo from './logo.png';
 import chipotle from './chipotle.png';
 
 function WorkExperience() {
+    const trustworthyRef = useRef(null);
+    const chipotleRef = useRef(null);
+
     return (
         <div className="flex flex-col font-montserrat">
-            <div className="flex flex-col custom2:flex-row border border-black mt-[30px] trustworthyglass-section">
+            <div ref={trustworthyRef} className="flex flex-col custom2:flex-row border border-black mt-[30px] trustworthyglass-section">
                 <div className="w-full custom2:w-[60%] bg-lime text-white text-center p-6 flex flex-col items-center">
                     <div className="text-[30px]">WORK EXPERIENCE</div>
                     <div className="mt-[20px] custom2:text-[28px] text-[23px]">Trustworthy Glass</div>
                     <div className="custom2:text-[25px] text-[21px]">Web Development Internship</div>
 
-                    {/* Three levels of paragraph layout */}
                     <div className="mt-[20px] custom2:text-[20px] text-[17px] text-center">
                         <div className="custom2:block hidden">
                             <p>This past summer I had a web development internship</p>
@@ -56,7 +59,7 @@ function WorkExperience() {
                 </div>
             </div>
 
-            <div className="flex flex-col custom2:flex-row border border-black mt-[-1px] chipotle-section">
+            <div ref={chipotleRef} className="flex flex-col custom2:flex-row border border-black mt-[-1px] chipotle-section">
                 <div className="hidden custom2:flex w-[40%] bg-white items-center justify-center p-4">
                     <img className="w-[90%] max-h-[250px] object-contain" src={chipotle} alt="Chipotle Logo" />
                 </div>
@@ -65,7 +68,6 @@ function WorkExperience() {
                     <div className="mt-[20px] custom2:text-[28px] text-[23px]">Chipotle Mexican Grill</div>
                     <div className="custom2:text-[25px] text-[21px]">Kitchen Manager</div>
 
-                    {/* Three levels of paragraph layout */}
                     <div className="mt-[20px] custom2:text-[20px] text-[17px] text-center">
                         <div className="custom2:block hidden">
                             <p>For the past 3 years, I have worked at Chipotle</p>

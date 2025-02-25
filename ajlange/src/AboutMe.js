@@ -65,7 +65,7 @@ function AboutMe() {
                 <div className="mt-[30px] h-[1px] w-[90%] items-center bg-black mx-auto"></div>
             </div>
         </div>
-    )
+    );
 }
 
 export default AboutMe;

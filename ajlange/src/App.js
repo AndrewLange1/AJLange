@@ -24,7 +24,7 @@ function App() {
   };
 
   return (
-    <div className="App bg-white">
+    <div className="App">
       <div className="flex flex-col">
         <Header 
           onAboutMeClick={() => scrollToSection(aboutMeRef)}
