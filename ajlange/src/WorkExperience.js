@@ -105,7 +105,7 @@ function WorkExperience() {
                         </div>
                     </div>
 
-                    <div className="mt-[20px] text-[20px]">May 2024 - Current</div>
+                    <div className="mt-[20px] text-[20px]">May 2022 - Current</div>
                 </div>
             </div>
         </div>
