@@ -55,7 +55,7 @@ function WorkExperience() {
                 </div>
 
                 <div className="hidden custom2:flex w-[40%] bg-white items-center justify-center p-4">
-                    <img className="w-[90%]" src={logo} alt="Trustworthy Glass Logo" />
+                    <img className="w-[400px]" src={logo} alt="Trustworthy Glass Logo" />
                 </div>
             </div>
 

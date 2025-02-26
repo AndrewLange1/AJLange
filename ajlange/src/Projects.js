@@ -23,7 +23,9 @@ function ProfessionalSkills() {
                     <div className="black-line"></div>
                     <div className="project-box flex flex-col items-center text-black">
                         <div className="ml4gw text-center md:text-[35px] text-[5.5vw]">
-                            ML4GW
+                            <a href="https://github.com/ML4GW" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                ML4GW
+                            </a>
                         </div>
                         <ul className="list-disc list-inside text-start md:text-[23px] text-[17px] mt-[50px] pl-[20px]">
                             <li className="mt-[30px]">Research project through MIT</li>
