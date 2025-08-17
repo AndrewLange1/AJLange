@@ -237,3 +237,50 @@ html, body {
   animation: gradient-x 10s ease infinite;
 }
 
+.honeycomb-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+}
+
+.honeycomb-row {
+  margin-bottom: -26px;
+}
+
+.honeycomb-button {
+  width: 120px;
+  height: 104px;
+  position: relative;
+  cursor: pointer;
+}
+
+.honeycomb-shape {
+  width: 100%;
+  height: 100%;
+  background: white;
+  clip-path: polygon(
+    50% 0%,
+    93% 25%,
+    93% 75%,
+    50% 100%,
+    7% 75%,
+    7% 25%
+  );
+  border: 3px solid #facc15; /* yellow-500 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.honeycomb-shape:hover {
+  transform: scale(1.08);
+  background: #fffbea; /* pale yellow highlight */
+}
+
+.honeycomb-content {
+  text-align: center;
+  font-size: 12px;
+}
