@@ -1,115 +1,289 @@
-import { useRef } from 'react';
-import './App.css';
-import logo from './logo.png';
-import chipotle from './chipotle.png';
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView, useAnimation } from "framer-motion";
+import "./App.css";
+import logo from "./logo.png";
+import chipotle from "./chipotle.png";
+
+function Panel({ item, isActive, offset, dragOffsetX, popKey, next, prev }) {
+  const controls = useAnimation();
+
+  const sideSpacing = 240;
+  const sideScale = 0.8;
+  const depthSpacing = -150;
+
+  const dragInfluence = dragOffsetX * (1 / (Math.abs(offset) + 1));
+  let x = offset * sideSpacing + dragInfluence;
+  let z = isActive ? 0 : Math.abs(offset) * depthSpacing;
+  let rotateY = offset < 0 ? 25 : offset > 0 ? -25 : dragInfluence / 25;
+  let scale = isActive ? 1 : sideScale;
+  let opacity = isActive ? 1 : 0.5;
+  let zIndex = isActive ? 10 : 5 - Math.abs(offset);
+
+  // Intro + pulsing animation
+  useEffect(() => {
+    if (isActive) {
+      // Start intro zoom
+      controls.start({
+        x: `calc(-50% + ${x}px)`,
+        z,
+        rotateY,
+        scale: 1,
+        opacity: 1,
+        transition: { duration: 0.9, ease: "easeOut" },
+      });
+
+      // After intro finishes, start subtle pulsing (scale only)
+      const pulseTimer = setTimeout(() => {
+        controls.start({
+          x: `calc(-50% + ${x}px)`,
+          z,
+          rotateY,
+          scale: [1, 1.04, 1],
+          transition: {
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          },
+        });
+      }, 1100); // wait a bit longer before pulsing
+
+      return () => clearTimeout(pulseTimer);
+    } else {
+      // Animate out when inactive
+      controls.start({
+        x: `calc(-50% + ${x}px)`,
+        z,
+        rotateY,
+        scale,
+        opacity,
+        transition: { duration: 0.6, ease: "easeOut" },
+      });
+    }
+  }, [isActive, x, z, rotateY, scale, opacity, controls]);
+
+  return (
+    <motion.div
+      className="panel absolute top-0 left-1/2 w-[60%] h-full p-6 flex flex-col items-center justify-center rounded-2xl bg-green-900 shadow-lg ring-2 ring-green-700 shadow-yellow-300"
+      style={{ zIndex }}
+      initial={{ opacity: 0, scale: 0.6, z: -600 }}
+      animate={controls}
+    >
+      {isActive ? (
+        <motion.div
+          key={popKey}
+          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="w-full h-full flex flex-col items-center justify-center"
+        >
+          {item.logo && (
+            <img
+              src={item.logo}
+              alt={item.title}
+              className="w-24 mb-4 object-contain"
+            />
+          )}
+          <div className="text-2xl font-bold text-black">{item.title}</div>
+          <div className="text-md italic text-black">{item.role}</div>
+          <div className="text-sm mt-3 text-center text-black">
+            {item.description}
+          </div>
+          {item.date && (
+            <div className="mt-3 text-sm text-black">{item.date}</div>
+          )}
+          <div className="flex mt-6 space-x-6">
+            <button
+              onClick={prev}
+              className="px-4 py-2 bg-yellow-400 text-green-900 font-semibold rounded-lg shadow hover:bg-yellow-500 transition"
+            >
+              ◀ Prev
+            </button>
+            <button
+              onClick={next}
+              className="px-4 py-2 bg-yellow-400 text-green-900 font-semibold rounded-lg shadow hover:bg-yellow-500 transition"
+            >
+              Next ▶
+            </button>
+          </div>
+        </motion.div>
+      ) : (
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          {item.logo && (
+            <img
+              src={item.logo}
+              alt={item.title}
+              className="w-24 mb-4 object-contain opacity-80"
+            />
+          )}
+          <div className="text-2xl font-bold text-green-800">{item.title}</div>
+          <div className="text-md italic text-green-700">{item.role}</div>
+          <div className="text-sm mt-3 text-center text-green-900">
+            {item.description}
+          </div>
+          {item.date && (
+            <div className="mt-3 text-sm text-green-600">{item.date}</div>
+          )}
+        </div>
+      )}
+    </motion.div>
+  );
+}
 
 function WorkExperience() {
-    const trustworthyRef = useRef(null);
-    const chipotleRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [dragOffsetX, setDragOffsetX] = useState(0);
+  const dragStartX = useRef(null);
+  const isDragging = useRef(false);
+  const [popKey, setPopKey] = useState(0);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
-    return (
-        <div className="flex flex-col font-montserrat">
-            <div ref={trustworthyRef} className="flex flex-col custom2:flex-row border border-black mt-[30px] trustworthyglass-section">
-                <div className="w-full custom2:w-[60%] bg-lime text-white text-center p-6 flex flex-col items-center">
-                    <div className="text-[30px]">WORK EXPERIENCE</div>
-                    <div className="mt-[20px] custom2:text-[28px] text-[23px]">Trustworthy Glass</div>
-                    <div className="custom2:text-[25px] text-[21px]">Web Development Internship</div>
+  const containerRef = useRef(null);
+  const inView = useInView(containerRef, { amount: 0.3 });
 
-                    <div className="mt-[20px] custom2:text-[20px] text-[17px] text-center">
-                        <div className="custom2:block hidden">
-                            <p>This past summer I had a web development internship</p>
-                            <p>with Trustworthy Glass. They are a local </p>
-                            <p>glass company who had high aspirations for future sites.</p>
-                            <p>Upon my employment there, I quickly realized their</p>
-                            <p>inefficient method of buying domain names in bulk, just</p>
-                            <p>to have them all forward to the same main site.</p>
-                            <p>Using Search Engine Optimization, I was able to fully</p>
-                            <p>design, create, and learn how to host 11 unique sites.</p>
-                        </div>
-                        <div className="custom3:block custom2:hidden hidden">
-                            <p>This past summer I had a web development</p>
-                            <p>internship with Trustworthy Glass.</p>
-                            <p>They are a local glass company with high</p>
-                            <p>aspirations for future sites. Upon my</p>
-                            <p>employment there, I realized their</p>
-                            <p>inefficient method of bulk domain purchasing.</p>
-                            <p>Using SEO, I fully designed, created, and</p>
-                            <p>hosted 11 unique websites.</p>
-                        </div>
-                        <div className="custom3:hidden custom2:hidden">
-                            <p>This past summer I had a web</p>
-                            <p>development internship with</p>
-                            <p>Trustworthy Glass. They are</p>
-                            <p>a local glass company with</p>
-                            <p>high aspirations for future</p>
-                            <p>sites. Upon my employment</p>
-                            <p>there, I realized their inefficient</p>
-                            <p>method of bulk domain purchasing.</p>
-                            <p>Using SEO, I fully designed,</p>
-                            <p>created, and hosted 11 unique</p>
-                            <p>websites.</p>
-                        </div>
-                    </div>
+  const items = [
+    {
+      title: "Welcome",
+      role: "Introduction",
+      description:
+        "Explore my work experience and projects by scrolling through panels.",
+    },
+    {
+      title: "Trustworthy Glass",
+      role: "Web Development Intern",
+      description:
+        "Designed, created, and hosted 11 websites with SEO to improve visibility.",
+      date: "May 2024 - Aug 2024",
+      logo: logo,
+    },
+    {
+      title: "Chipotle",
+      role: "Kitchen Manager",
+      description:
+        "Managed teams in fast-paced environments, promoted to manager after 3 years.",
+      date: "May 2022 - Present",
+      logo: chipotle,
+    },
+    {
+      title: "GopherMatch",
+      role: "Full Stack Project",
+      description:
+        "Built a roommate finder for UMN students using React, Node.js, Express, and MySQL.",
+    },
+    {
+      title: "ML4GW",
+      role: "Research Assistant",
+      description:
+        "Analyzed black hole mergers, built ML models, and improved reliability with test cases.",
+    },
+  ];
 
-                    <div className="mt-[20px] text-[20px]">May 2024 - August 2024</div>
-                </div>
+  const mod = (n, m) => ((n % m) + m) % m;
 
-                <div className="hidden custom2:flex w-[40%] bg-white items-center justify-center p-4">
-                    <img className="w-[400px]" src={logo} alt="Trustworthy Glass Logo" />
-                </div>
-            </div>
+  const goTo = (idx) => {
+    setActiveIndex(mod(idx, items.length));
+    setPopKey((k) => k + 1);
+  };
 
-            <div ref={chipotleRef} className="flex flex-col custom2:flex-row border border-black mt-[-1px] chipotle-section">
-                <div className="hidden custom2:flex w-[40%] bg-white items-center justify-center p-4">
-                    <img className="w-[90%] max-h-[250px] object-contain" src={chipotle} alt="Chipotle Logo" />
-                </div>
+  const next = () => {
+    if (!hasInteracted && activeIndex === 0) return;
+    setHasInteracted(true);
+    goTo(activeIndex + 1);
+  };
 
-                <div className="w-full custom2:w-[60%] bg-lime text-white text-center p-6 flex flex-col items-center">
-                    <div className="mt-[20px] custom2:text-[28px] text-[23px]">Chipotle Mexican Grill</div>
-                    <div className="custom2:text-[25px] text-[21px]">Kitchen Manager</div>
+  const prev = () => {
+    if (!hasInteracted && activeIndex === 0) return;
+    setHasInteracted(true);
+    goTo(activeIndex - 1);
+  };
 
-                    <div className="mt-[20px] custom2:text-[20px] text-[17px] text-center">
-                        <div className="custom2:block hidden">
-                            <p>For the past 3 years, I have worked at Chipotle</p>
-                            <p> Mexican Grill. This experience has taught</p>
-                            <p>me to navigate stressful, fast-paced environments.</p>
-                            <p>Exhibiting patience and professionalism while</p>
-                            <p>resolving customer service concerns is a vital</p>
-                            <p>aspect of my job. During my time learning these skills,</p>
-                            <p>I have been promoted to a manager.</p>
-                            <p>It is rewarding getting the opportunity</p>
-                            <p>to see my progress get recognition.</p>
-                        </div>
-                        <div className="custom3:block custom2:hidden hidden">
-                            <p>For the past three years, I have</p>
-                            <p>worked at Chipotle Mexican Grill.</p>
-                            <p>This experience has taught me how</p>
-                            <p>to manage fast-paced environments.</p>
-                            <p>Resolving customer service concerns</p>
-                            <p>professionally is a vital aspect of my role.</p>
-                            <p>Through this, I was promoted to a manager,</p>
-                            <p>earning recognition for my efforts.</p>
-                        </div>
-                        <div className="custom3:hidden custom2:hidden">
-                            <p>For the past three years,</p>
-                            <p>I have worked at Chipotle</p>
-                            <p>Mexican Grill. This experience</p>
-                            <p>has taught me how to manage</p>
-                            <p>fast-paced environments.</p>
-                            <p>Resolving customer service</p>
-                            <p>concerns professionally is</p>
-                            <p>a vital aspect of my role.</p>
-                            <p>Through this, I was promoted</p>
-                            <p>to a manager, earning</p>
-                            <p>recognition for my efforts.</p>
-                        </div>
-                    </div>
+  // Reset to welcome when in view
+  useEffect(() => {
+    if (!inView) return;
+    setActiveIndex(0);
+    const timer = setTimeout(() => {
+      setActiveIndex(0);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [inView]);
 
-                    <div className="mt-[20px] text-[20px]">May 2022 - Current</div>
-                </div>
-            </div>
-        </div>
-    );
+  // Mouse drag logic
+  const handleMouseDown = (e) => {
+    isDragging.current = true;
+    dragStartX.current = e.clientX;
+  };
+  const handleMouseMove = (e) => {
+    if (!isDragging.current) return;
+    const diff = e.clientX - dragStartX.current;
+    setDragOffsetX(diff);
+  };
+  const handleMouseUp = () => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    if (Math.abs(dragOffsetX) > 120) {
+      setHasInteracted(true);
+      if (dragOffsetX > 0) prev();
+      else next();
+    }
+    setDragOffsetX(0);
+  };
+
+  return (
+    <motion.div
+      ref={containerRef}
+      className="flex flex-col items-center justify-center w-full h-screen bg-white overflow-hidden font-montserrat"
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      initial={{ opacity: 0, scale: 0.6, y: 120 }}
+      animate={
+        inView
+          ? { opacity: 1, scale: 1, y: 0 }
+          : { opacity: 0, scale: 0.6, y: 120 }
+      }
+      exit={{ opacity: 0, scale: 0.6, y: -120 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
+      {/* Dots */}
+      <div className="flex space-x-4 mb-6 z-20">
+        {items.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => {
+              if (!hasInteracted && idx !== 0) setHasInteracted(true);
+              goTo(idx);
+            }}
+            className={`w-3 h-3 rounded-full ${
+              idx === activeIndex ? "bg-yellow-500" : "bg-gray-400"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Panels */}
+      <div
+        className="relative w-[80%] h-[70%] perspective cursor-grab active:cursor-grabbing"
+        onMouseDown={handleMouseDown}
+      >
+        {items.map((item, idx) => {
+          let offset = (idx - activeIndex + items.length) % items.length;
+          if (offset > items.length / 2) offset -= items.length;
+
+          return (
+            <Panel
+              key={idx}
+              item={item}
+              isActive={offset === 0}
+              offset={offset}
+              dragOffsetX={dragOffsetX}
+              popKey={popKey}
+              next={next}
+              prev={prev}
+            />
+          );
+        })}
+      </div>
+    </motion.div>
+  );
 }
 
 export default WorkExperience;
