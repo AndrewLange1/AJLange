@@ -4,14 +4,50 @@ import "./App.css";
 import logo from "./logo.png";
 import chipotle from "./chipotle.png";
 
-function Panel({ item, isActive, offset, dragOffsetX, popKey, next, prev }) {
+/** 🔹 Hook to detect if screen is large (lg: ≥1024px) */
+function useIsLargeScreen() {
+  const [isLarge, setIsLarge] = useState(window.innerWidth >= 1024);
+
+  useEffect(() => {
+    const handleResize = () => setIsLarge(window.innerWidth >= 1024);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return isLarge;
+}
+
+/** 🔹 Hook for responsive margin */
+function useResponsiveMargin() {
+  const getMargin = () => (window.innerWidth < 768 ? "-50px" : "-150px");
+  const [margin, setMargin] = useState(getMargin);
+
+  useEffect(() => {
+    const handleResize = () => setMargin(getMargin());
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return margin;
+}
+
+function Panel({
+  item,
+  isActive,
+  offset,
+  dragOffsetX,
+  popKey,
+  next,
+  prev,
+  flipDirection,
+}) {
   const controls = useAnimation();
 
   const sideSpacing = 240;
   const sideScale = 0.8;
   const depthSpacing = -150;
-
   const dragInfluence = dragOffsetX * (1 / (Math.abs(offset) + 1));
+
   let x = offset * sideSpacing + dragInfluence;
   let z = isActive ? 0 : Math.abs(offset) * depthSpacing;
   let rotateY = offset < 0 ? 25 : offset > 0 ? -25 : dragInfluence / 25;
@@ -22,48 +58,59 @@ function Panel({ item, isActive, offset, dragOffsetX, popKey, next, prev }) {
   // Intro + pulsing animation
   useEffect(() => {
     if (isActive) {
-      // Start intro zoom
-      controls.start({
-        x: `calc(-50% + ${x}px)`,
-        z,
-        rotateY,
-        scale: 1,
-        opacity: 1,
-        transition: { duration: 0.9, ease: "easeOut" },
-      });
+      const isWelcome = item.title === "Welcome";
+      if (isWelcome) {
+        controls.start({
+          x: `calc(-50% + ${x}px)`,
+          z,
+          rotateY: [flipDirection * 90, 0],
+          scale: [0.9, 1],
+          opacity: [0, 1],
+          transition: { duration: 0.1, ease: "easeOut" },
+        });
 
-      // After intro finishes, start subtle pulsing (scale only)
-      const pulseTimer = setTimeout(() => {
+        const pulseTimer = setTimeout(() => {
+          controls.start({
+            x: `calc(-50% + ${x}px)`,
+            z,
+            rotateY: 0,
+            scale: [1, 1.04, 1],
+            transition: {
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+          });
+        }, 900);
+        return () => clearTimeout(pulseTimer);
+      } else {
         controls.start({
           x: `calc(-50% + ${x}px)`,
           z,
           rotateY,
-          scale: [1, 1.04, 1],
-          transition: {
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
+          scale: 1,
+          opacity: 1,
+          transition: { duration: 0.1, ease: "easeOut" },
         });
-      }, 1100); // wait a bit longer before pulsing
-
-      return () => clearTimeout(pulseTimer);
+      }
     } else {
-      // Animate out when inactive
       controls.start({
         x: `calc(-50% + ${x}px)`,
         z,
         rotateY,
         scale,
         opacity,
-        transition: { duration: 0.6, ease: "easeOut" },
+        transition: { duration: 0.1, ease: "easeOut" },
       });
     }
-  }, [isActive, x, z, rotateY, scale, opacity, controls]);
+  }, [isActive, x, z, rotateY, scale, opacity, controls, flipDirection, item.title]);
 
   return (
     <motion.div
-      className="panel absolute top-0 left-1/2 w-[60%] h-full p-6 flex flex-col items-center justify-center rounded-2xl bg-green-900 shadow-lg ring-2 ring-green-700 shadow-yellow-300"
+      className="panel absolute top-0 left-1/2 w-[100%] md:w-[80%] lg:w-[60%] 
+                 min-h-[400px] md:min-h-[500px] lg:min-h-[600px] 
+                 h-auto p-6 flex flex-col items-center justify-center 
+                 rounded-2xl bg-green-900 shadow-lg ring-2 ring-green-700 shadow-yellow-300"
       style={{ zIndex }}
       initial={{ opacity: 0, scale: 0.6, z: -600 }}
       animate={controls}
@@ -71,10 +118,10 @@ function Panel({ item, isActive, offset, dragOffsetX, popKey, next, prev }) {
       {isActive ? (
         <motion.div
           key={popKey}
-          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+          initial={{ opacity: 0, y: 5, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="w-full h-full flex flex-col items-center justify-center"
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="w-full h-auto flex flex-col items-center justify-center"
         >
           {item.logo && (
             <img
@@ -91,6 +138,7 @@ function Panel({ item, isActive, offset, dragOffsetX, popKey, next, prev }) {
           {item.date && (
             <div className="mt-3 text-sm text-black">{item.date}</div>
           )}
+
           <div className="flex mt-6 space-x-6">
             <button
               onClick={prev}
@@ -107,7 +155,7 @@ function Panel({ item, isActive, offset, dragOffsetX, popKey, next, prev }) {
           </div>
         </motion.div>
       ) : (
-        <div className="w-full h-full flex flex-col items-center justify-center">
+        <div className="w-full h-auto flex flex-col items-center justify-center">
           {item.logo && (
             <img
               src={item.logo}
@@ -138,8 +186,14 @@ function WorkExperience() {
   const [hasInteracted, setHasInteracted] = useState(false);
 
   const containerRef = useRef(null);
-  const inView = useInView(containerRef, { amount: 0.3 });
 
+  const isLarge = useIsLargeScreen(); // 🔹 detect screen size
+  const margin = useResponsiveMargin();
+  const inView = useInView(containerRef, { 
+    margin: isLarge ? "-40% -30%" : "0px 0px", 
+    once: false 
+  });
+  
   const items = [
     {
       title: "Welcome",
@@ -185,7 +239,6 @@ function WorkExperience() {
   };
 
   const next = () => {
-    if (!hasInteracted && activeIndex === 0) return;
     setHasInteracted(true);
     goTo(activeIndex + 1);
   };
@@ -211,11 +264,13 @@ function WorkExperience() {
     isDragging.current = true;
     dragStartX.current = e.clientX;
   };
+
   const handleMouseMove = (e) => {
     if (!isDragging.current) return;
     const diff = e.clientX - dragStartX.current;
     setDragOffsetX(diff);
   };
+
   const handleMouseUp = () => {
     if (!isDragging.current) return;
     isDragging.current = false;
@@ -228,61 +283,72 @@ function WorkExperience() {
   };
 
   return (
-    <motion.div
+    <div
       ref={containerRef}
-      className="flex flex-col items-center justify-center w-full h-screen bg-white overflow-hidden font-montserrat"
+      className="flex flex-col items-center justify-center w-full py-[10%] sm:py-[11%] md:py-[13%] md:mt-[-6%] lg:mt-[-14%] lg:py-[20%] bg-white font-montserrat"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      initial={{ opacity: 0, scale: 0.6, y: 120 }}
-      animate={
-        inView
-          ? { opacity: 1, scale: 1, y: 0 }
-          : { opacity: 0, scale: 0.6, y: 120 }
-      }
-      exit={{ opacity: 0, scale: 0.6, y: -120 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      {/* Dots */}
-      <div className="flex space-x-4 mb-6 z-20">
-        {items.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => {
-              if (!hasInteracted && idx !== 0) setHasInteracted(true);
-              goTo(idx);
-            }}
-            className={`w-3 h-3 rounded-full ${
-              idx === activeIndex ? "bg-yellow-500" : "bg-gray-400"
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Panels */}
-      <div
-        className="relative w-[80%] h-[70%] perspective cursor-grab active:cursor-grabbing"
-        onMouseDown={handleMouseDown}
+      <motion.div
+        initial={{
+          opacity: 0,
+          scale: 0.6,
+          y: isLarge ? 0 : 120, // 🔹 only slide up on small/med screens
+        }}
+        animate={
+          inView
+            ? { opacity: 1, scale: 1, y: 0 }
+            : { opacity: 0, scale: 0.6, y: isLarge ? 0 : 120 }
+        }
+        exit={{ opacity: 0, scale: 0.6, y: isLarge ? 0 : -120 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-full flex flex-col items-center"
       >
-        {items.map((item, idx) => {
-          let offset = (idx - activeIndex + items.length) % items.length;
-          if (offset > items.length / 2) offset -= items.length;
-
-          return (
-            <Panel
+        {/* Dots */}
+        <div className="flex space-x-4 mb-6 z-20">
+          {items.map((_, idx) => (
+            <button
               key={idx}
-              item={item}
-              isActive={offset === 0}
-              offset={offset}
-              dragOffsetX={dragOffsetX}
-              popKey={popKey}
-              next={next}
-              prev={prev}
+              onClick={() => {
+                if (!hasInteracted && idx !== 0) setHasInteracted(true);
+                goTo(idx);
+              }}
+              className={`w-3 h-3 rounded-full ${
+                idx === activeIndex ? "bg-yellow-500" : "bg-gray-400"
+              }`}
             />
-          );
-        })}
-      </div>
-    </motion.div>
+          ))}
+        </div>
+
+        {/* Panels */}
+        <div
+          className="relative w-[80%] min-h-[400px] perspective cursor-grab active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+        >
+          {items.map((item, idx) => {
+            let offset = (idx - activeIndex + items.length) % items.length;
+            if (offset > items.length / 2) offset -= items.length;
+
+            const flipDirection = idx === 0 ? 1 : idx > 0 ? -1 : 1;
+
+            return (
+              <Panel
+                key={idx}
+                item={item}
+                isActive={offset === 0}
+                offset={offset}
+                dragOffsetX={dragOffsetX}
+                popKey={popKey}
+                next={next}
+                prev={prev}
+                flipDirection={flipDirection}
+              />
+            );
+          })}
+        </div>
+      </motion.div>
+    </div>
   );
 }
 

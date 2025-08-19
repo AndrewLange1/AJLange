@@ -4,7 +4,6 @@ import AboutMe from './AboutMe.js';
 import Header from './Header.js';
 import ProfessionalSkills from './ProfessionalSkills.js';
 import WorkExperience from './WorkExperience.js';
-import Projects from './Projects.js';
 import Footer from './Footer.js';
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -102,12 +101,8 @@ function App() {
             <ProfessionalSkills />
           </div>
 
-          <div ref={workRef}>
+          <div ref={workRef} >
             <WorkExperience />
-          </div>
-
-          <div ref={projectsRef}>
-            <Projects />
           </div>
 
           <div ref={footerRef}>
