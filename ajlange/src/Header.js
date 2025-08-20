@@ -71,9 +71,9 @@ const Header = React.forwardRef(({ onAboutMeClick, onWorkExperienceClick, onProj
         className="block md:hidden ml-auto mr-[10px] cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105"
         onClick={toggleMenu}
       >
-        <div className="bg-green-700 h-[3px] w-[25px] mb-[4px]"></div>
-        <div className="bg-green-700 h-[3px] w-[25px] mb-[4px]"></div>
-        <div className="bg-green-700 h-[3px] w-[25px]"></div>
+        <div className="bg-black h-[3px] w-[25px] mb-[4px]"></div>
+        <div className="bg-black h-[3px] w-[25px] mb-[4px]"></div>
+        <div className="bg-black h-[3px] w-[25px]"></div>
       </div>
 
       {isMenuOpen && (

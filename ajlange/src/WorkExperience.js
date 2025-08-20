@@ -17,7 +17,7 @@ function useIsLargeScreen() {
   return isLarge;
 }
 
-/** 🔹 Hook for responsive margin */
+/** 🔹 Hook for responsive margin (kept for parity even if unused) */
 function useResponsiveMargin() {
   const getMargin = () => (window.innerWidth < 768 ? "-50px" : "-150px");
   const [margin, setMargin] = useState(getMargin);
@@ -40,8 +40,11 @@ function Panel({
   next,
   prev,
   flipDirection,
+  reenterKey,
 }) {
   const controls = useAnimation();
+  const wasActiveRef = useRef(isActive);
+  const [isPoppingOut, setIsPoppingOut] = useState(false);
 
   const sideSpacing = 240;
   const sideScale = 0.8;
@@ -53,65 +56,135 @@ function Panel({
   let rotateY = offset < 0 ? 25 : offset > 0 ? -25 : dragInfluence / 25;
   let scale = isActive ? 1 : sideScale;
   let opacity = isActive ? 1 : 0.5;
-  let zIndex = isActive ? 10 : 5 - Math.abs(offset);
+  let baseZIndex = isActive ? 10 : 5 - Math.abs(offset);
 
-  // Intro + pulsing animation
   useEffect(() => {
-    if (isActive) {
-      const isWelcome = item.title === "Welcome";
-      if (isWelcome) {
-        controls.start({
-          x: `calc(-50% + ${x}px)`,
-          z,
-          rotateY: [flipDirection * 90, 0],
-          scale: [0.9, 1],
-          opacity: [0, 1],
-          transition: { duration: 0.1, ease: "easeOut" },
-        });
+    let cancelled = false;
+    const justDeactivated = wasActiveRef.current && !isActive;
+    const isSmall = window.innerWidth < 640;
 
-        const pulseTimer = setTimeout(() => {
-          controls.start({
+    const enterDelay = isSmall ? 0.3 : 0.05;
+    const exitDelay = isSmall ? 0.2 : 0.0;
+    const enterDuration = isSmall ? 0.3 : 0.4;
+    const exitDuration = isSmall ? 0.25 : 0.35;
+    const settleDuration = isSmall ? 0.15 : 0.2;
+
+    let pulseTimer;
+
+    (async () => {
+      if (isActive) {
+        setIsPoppingOut(false);
+        const isWelcome = item.title === "Welcome";
+        if (isWelcome) {
+          await controls.start({
             x: `calc(-50% + ${x}px)`,
             z,
-            rotateY: 0,
-            scale: [1, 1.04, 1],
+            rotateY: [flipDirection * 90, 0],
+            scale: [0.9, 1],
+            opacity: [0, 1],
             transition: {
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
+              duration: enterDuration,
+              ease: "easeOut",
+              delay: enterDelay,
             },
           });
-        }, 900);
-        return () => clearTimeout(pulseTimer);
+          if (cancelled) return;
+
+          pulseTimer = setTimeout(() => {
+            controls.start({
+              x: `calc(-50% + ${x}px)`,
+              z,
+              rotateY: 0,
+              scale: [1, 1.04, 1],
+              transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+            });
+          }, 900);
+        } else {
+          await controls.start({
+            x: `calc(-50% + ${x}px)`,
+            z,
+            rotateY,
+            scale: 1,
+            opacity: 1,
+            transition: {
+              duration: enterDuration,
+              ease: "easeOut",
+              delay: enterDelay,
+            },
+          });
+        }
       } else {
-        controls.start({
-          x: `calc(-50% + ${x}px)`,
-          z,
-          rotateY,
-          scale: 1,
-          opacity: 1,
-          transition: { duration: 0.1, ease: "easeOut" },
-        });
+        if (justDeactivated) {
+          setIsPoppingOut(true);
+          await controls.start({
+            rotateY: flipDirection * -90,
+            scale: 0.6,
+            opacity: 0,
+            z: -200,
+            transition: {
+              duration: exitDuration,
+              ease: "easeIn",
+              delay: exitDelay,
+            },
+          });
+          if (cancelled) return;
+
+          setIsPoppingOut(false);
+          await controls.start({
+            x: `calc(-50% + ${x}px)`,
+            z,
+            rotateY,
+            scale,
+            opacity,
+            transition: { duration: settleDuration, ease: "easeOut" },
+          });
+        } else {
+          await controls.start({
+            x: `calc(-50% + ${x}px)`,
+            z,
+            rotateY,
+            scale,
+            opacity,
+            transition: {
+              duration: settleDuration,
+              ease: "easeOut",
+              delay: exitDelay,
+            },
+          });
+        }
       }
-    } else {
-      controls.start({
-        x: `calc(-50% + ${x}px)`,
-        z,
-        rotateY,
-        scale,
-        opacity,
-        transition: { duration: 0.1, ease: "easeOut" },
-      });
-    }
-  }, [isActive, x, z, rotateY, scale, opacity, controls, flipDirection, item.title]);
+    })();
+
+    wasActiveRef.current = isActive;
+
+    return () => {
+      cancelled = true;
+      if (pulseTimer) clearTimeout(pulseTimer);
+    };
+  }, [
+    isActive,
+    x,
+    z,
+    rotateY,
+    scale,
+    opacity,
+    controls,
+    flipDirection,
+    item.title,
+    reenterKey,
+  ]);
 
   return (
     <motion.div
-      className="panel absolute top-0 left-1/2 w-[100%] md:w-[80%] lg:w-[60%] 
-                 min-h-[400px] md:min-h-[500px] lg:min-h-[600px] 
-                 h-auto p-6 flex flex-col items-center justify-center 
+      className="panel absolute top-0 left-1/2 w-[100%] md:w-[80%] lg:w-[60%]
+                 min-h-[400px] md:min-h-[500px] lg:min-h-[600px]
+                 h-auto p-6 flex flex-col items-center justify-center
                  rounded-2xl bg-green-900 shadow-lg ring-2 ring-green-700 shadow-yellow-300"
-      style={{ zIndex }}
+      style={{
+        zIndex: isPoppingOut ? 50 : baseZIndex,
+        transformStyle: "preserve-3d",
+        willChange: "transform, opacity",
+      }}
       initial={{ opacity: 0, scale: 0.6, z: -600 }}
       animate={controls}
     >
@@ -135,9 +208,7 @@ function Panel({
           <div className="text-sm mt-3 text-center text-black">
             {item.description}
           </div>
-          {item.date && (
-            <div className="mt-3 text-sm text-black">{item.date}</div>
-          )}
+          {item.date && <div className="mt-3 text-sm text-black">{item.date}</div>}
 
           <div className="flex mt-6 space-x-6">
             <button
@@ -178,22 +249,23 @@ function Panel({
 }
 
 function WorkExperience() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(2);
   const [dragOffsetX, setDragOffsetX] = useState(0);
   const dragStartX = useRef(null);
   const isDragging = useRef(false);
   const [popKey, setPopKey] = useState(0);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [reenterKey, setReenterKey] = useState(0);
+  const [showPanels, setShowPanels] = useState(true);
 
   const containerRef = useRef(null);
-
-  const isLarge = useIsLargeScreen(); // 🔹 detect screen size
-  const margin = useResponsiveMargin();
-  const inView = useInView(containerRef, { 
-    margin: isLarge ? "-40% -30%" : "0px 0px", 
-    once: false 
+  const isLarge = useIsLargeScreen();
+  useResponsiveMargin();
+  const inView = useInView(containerRef, {
+    margin: isLarge ? "-40% -30%" : "-15% 0px",
+    once: false,
   });
-  
+
   const items = [
     {
       title: "Welcome",
@@ -232,45 +304,56 @@ function WorkExperience() {
   ];
 
   const mod = (n, m) => ((n % m) + m) % m;
-
   const goTo = (idx) => {
     setActiveIndex(mod(idx, items.length));
     setPopKey((k) => k + 1);
   };
-
   const next = () => {
     setHasInteracted(true);
     goTo(activeIndex + 1);
   };
-
   const prev = () => {
     if (!hasInteracted && activeIndex === 0) return;
     setHasInteracted(true);
     goTo(activeIndex - 1);
   };
 
-  // Reset to welcome when in view
+  const prepAndFlipToWelcome = () => {
+    setShowPanels(false);
+    setActiveIndex(2);
+    setPopKey((k) => k + 1);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setShowPanels(true);
+        goTo(0);
+        setReenterKey((k) => k + 1);
+      });
+    });
+  };
+
+  const prevInViewRef = useRef(false);
   useEffect(() => {
-    if (!inView) return;
-    setActiveIndex(0);
-    const timer = setTimeout(() => {
-      setActiveIndex(0);
-    }, 100);
-    return () => clearTimeout(timer);
+    const wasInView = prevInViewRef.current;
+    if (inView && !wasInView) {
+      prepAndFlipToWelcome();
+    } else if (!inView && wasInView) {
+      // 🔹 Reset back to index 2 when animating OUT of view
+      setActiveIndex(2);
+      setPopKey((k) => k + 1);
+    }
+    prevInViewRef.current = inView;
   }, [inView]);
 
-  // Mouse drag logic
   const handleMouseDown = (e) => {
     isDragging.current = true;
     dragStartX.current = e.clientX;
   };
-
   const handleMouseMove = (e) => {
     if (!isDragging.current) return;
     const diff = e.clientX - dragStartX.current;
     setDragOffsetX(diff);
   };
-
   const handleMouseUp = () => {
     if (!isDragging.current) return;
     isDragging.current = false;
@@ -291,11 +374,7 @@ function WorkExperience() {
       onMouseLeave={handleMouseUp}
     >
       <motion.div
-        initial={{
-          opacity: 0,
-          scale: 0.6,
-          y: isLarge ? 0 : 120, // 🔹 only slide up on small/med screens
-        }}
+        initial={{ opacity: 0, scale: 0.6, y: isLarge ? 0 : 120 }}
         animate={
           inView
             ? { opacity: 1, scale: 1, y: 0 }
@@ -304,6 +383,7 @@ function WorkExperience() {
         exit={{ opacity: 0, scale: 0.6, y: isLarge ? 0 : -120 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="w-full flex flex-col items-center"
+        style={{ visibility: showPanels ? "visible" : "hidden" }}
       >
         {/* Dots */}
         <div className="flex space-x-4 mb-6 z-20">
@@ -329,9 +409,7 @@ function WorkExperience() {
           {items.map((item, idx) => {
             let offset = (idx - activeIndex + items.length) % items.length;
             if (offset > items.length / 2) offset -= items.length;
-
             const flipDirection = idx === 0 ? 1 : idx > 0 ? -1 : 1;
-
             return (
               <Panel
                 key={idx}
@@ -343,6 +421,7 @@ function WorkExperience() {
                 next={next}
                 prev={prev}
                 flipDirection={flipDirection}
+                reenterKey={reenterKey}
               />
             );
           })}
