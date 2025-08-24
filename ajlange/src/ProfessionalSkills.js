@@ -18,7 +18,6 @@ import { FaJava, FaMicrosoft } from 'react-icons/fa';
 import { MdShowChart } from 'react-icons/md';
 import { ArrowLeft } from 'lucide-react';
 
-// Hook to detect if screen is lg (≥1024px)
 function useIsLargeScreen() {
   const [isLarge, setIsLarge] = useState(window.innerWidth >= 1024);
 
@@ -97,7 +96,6 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
     'Microsoft Office': 'Suite of office applications for productivity and management.',
   };  
 
-  // ======= Layout Settings (responsive to lg breakpoint) =======
   const circleSize = isLarge ? 450 : 420;
   const bubbleDiameter = isLarge ? 275 : 240;
   const center = circleSize / 2;
@@ -105,11 +103,9 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
   const iconSize = 56;
   const iconR = iconSize / 2;
 
-  // ======= Honeycomb Layouts =======
-  const honeycombLarge = [4, 5, 4];      // large screens → 4-5-4
-  const honeycombSmall = [3, 2, 3, 2, 3]; // small screens → 3-2-3-2-3
+  const honeycombLarge = [4, 5, 4];
+  const honeycombSmall = [3, 2, 3, 2, 3];
 
-  // Helper: chunk skills into rows based on layout
   const chunkSkills = (layout) => {
     let rows = [];
     let i = 0;
@@ -125,17 +121,16 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
       ref={ref}
       animate={controls}
       initial={{ opacity: 0, y: 20 }}
-      className="font-montserrat mt-[20px] flex flex-col lg:flex-row gap-20 bg-white justify-center items-center"
+      className="font-montserrat mt-[20px] flex flex-col lg:flex-row gap-20 bg-offwhite justify-center items-center"
       style={{ minHeight: circleSize }}
     >
       {!altView ? (
-        // Orbiting Circle View
         <motion.div
           className="relative flex items-center justify-center"
           style={{ width: circleSize, height: circleSize }}
         >
           <div
-            className="absolute rounded-full bg-white border-2 border-yellow-400 shadow-lg flex flex-col items-center justify-center text-center p-6 transition-transform duration-300 hover:scale-105 hover:shadow-yellow-200"
+            className="absolute rounded-full bg-offwhite border-2 border-sage shadow-lg flex flex-col items-center justify-center text-center p-6 transition-transform duration-300 hover:scale-105 hover:shadow-sage/60"
             style={{
               width: bubbleDiameter,
               height: bubbleDiameter,
@@ -167,7 +162,7 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
                 </p>
                 <button
                   onClick={() => setAltView(true)}
-                  className="mt-2 px-3 py-1 rounded border border-yellow-500 text-yellow-600 text-[16px] lg:text-[16px] hover:bg-yellow-50 hover:shadow-md transition"
+                  className="mt-2 px-3 py-1 rounded border border-sage text-sage text-[16px] lg:text-[16px] hover:bg-sage/15 hover:shadow-md transition"
                 >
                   Try Alternative View
                 </button>
@@ -175,7 +170,6 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
             )}
           </div>
 
-          {/* Rotating orbit of icons */}
           <motion.div
             className="absolute w-full h-full"
             animate={{ rotate: 360 }}
@@ -189,7 +183,7 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
               return (
                 <motion.div
                   key={name}
-                  className="absolute flex items-center justify-center rounded-full bg-white shadow-md cursor-pointer"
+                  className="absolute flex items-center justify-center rounded-full bg-offwhite shadow-md cursor-pointer"
                   style={{
                     left: x,
                     top: y,
@@ -206,19 +200,13 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
           </motion.div>
         </motion.div>
       ) : (
-        // Honeycomb Alternative View
         <div className="flex flex-col items-center">
           <h2 className="mb-6 text-lg lg:text-base font-semibold">My Skills</h2>
 
-          {/* Small screen honeycomb */}
           <div className="block lg:hidden">
             <div className="honeycomb-grid">
               {chunkSkills(honeycombSmall).map((row, rowIndex) => (
-                <div
-                  key={rowIndex}
-                  className="honeycomb-row"
-                  style={{ marginLeft: rowIndex % 2 === 1 ? "10px" : "20" }}
-                >
+                <div key={rowIndex} className="honeycomb-row">
                   {row.map(({ name, icon }) => (
                     <div
                       key={name}
@@ -238,15 +226,10 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
             </div>
           </div>
 
-          {/* Large screen honeycomb */}
           <div className="hidden lg:block">
             <div className="honeycomb-grid">
               {chunkSkills(honeycombLarge).map((row, rowIndex) => (
-                <div
-                  key={rowIndex}
-                  className="honeycomb-row"
-                  style={{ marginLeft: rowIndex % 2 === 1 ? "0" : "0" }}
-                >
+                <div key={rowIndex} className="honeycomb-row">
                   {row.map(({ name, icon }) => (
                     <div
                       key={name}
@@ -268,14 +251,13 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
 
           <button
             onClick={() => setAltView(false)}
-            className="mt-[50px] px-3 py-1 rounded border border-black text-black text-sm lg:text-xs hover:bg-gray-100 hover:shadow-md transition"
+            className="mt-[50px] px-3 py-1 rounded border border-black text-black text-sm lg:text-xs hover:bg-gray-200 hover:shadow-md transition"
           >
             Back to Orbit View
           </button>
         </div>
       )}
 
-      {/* Profile picture (hidden on small screens) */}
       <div className="hidden lg:flex flex-col items-center justify-center">
         <img
           src={photo}
@@ -285,7 +267,6 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
         />
       </div>
 
-      {/* Honeycomb CSS */}
       <style>{`
         .honeycomb-grid {
           display: flex;
@@ -311,7 +292,7 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
         .honeycomb-inner {
           width: 100%;
           height: 100%;
-          background: white;
+          background: #F2F0EF; /* offwhite instead of white */
           clip-path: polygon(
             50% 0%,
             93% 25%,
@@ -322,14 +303,10 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
           );
           position: relative;
           z-index: 2;
-        
-          /* Center content perfectly */
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-        
-          /* Fix offset issue */
           padding-top: 4px;
           padding-bottom: 2px;
           box-sizing: border-box;
@@ -345,7 +322,7 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
           left: -3px;
           right: -3px;
           bottom: -3px;
-          background: #facc15;
+          background: #71AD56;
           clip-path: polygon(
             50% 0%,
             93% 25%,
@@ -357,7 +334,7 @@ function ProfessionalSkills({ triggeredFromAboutMe }) {
           z-index: 1;
         }
         .honeycomb-shape:hover .honeycomb-inner {
-          background: #fffbea;
+          background: #f6f4f3; /* slightly lighter offwhite for hover */
           transform: scale(1.05);
         }
       `}</style>

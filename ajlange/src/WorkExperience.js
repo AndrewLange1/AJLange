@@ -368,7 +368,7 @@ function WorkExperience() {
   return (
     <div
       ref={containerRef}
-      className="flex flex-col items-center justify-center w-full py-[10%] sm:py-[11%] md:py-[13%] md:mt-[-6%] lg:mt-[-14%] lg:py-[20%] bg-white font-montserrat"
+      className="flex flex-col items-center justify-center w-full py-[10%] sm:py-[11%] md:py-[13%] md:mt-[-6%] lg:mt-[-14%] lg:py-[20%] bg-offwhite font-montserrat"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}

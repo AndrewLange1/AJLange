@@ -25,7 +25,7 @@ function AboutMe() {
   ];
 
   return (
-    <div id="about-me" className="font-montserrat relative overflow-hidden">
+    <div id="about-me" className="font-montserrat relative overflow-hidden bg-offwhite">
       {/* Static title */}
       <div className="custom:text-[40px] text-[6vw] max-text-[40px] text-green-800 text-center mt-[30px] select-none">
         WHO AM I?

@@ -297,3 +297,7 @@ html, body {
   transition: all 0.8s ease;
   backdrop-filter: blur(8px);
 }
+
+body {
+  @apply bg-offwhite;
+}

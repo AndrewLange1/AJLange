@@ -9,6 +9,8 @@ module.exports = {
             },
             colors: {
                 lime: '#50962F',
+                sage: '#71AD56',
+                offwhite: '#F2F0EF',
             },
             screens: {
                 'custom': '850px',
