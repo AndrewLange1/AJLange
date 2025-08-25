@@ -48,8 +48,8 @@ const Header = forwardRef(
             >
               Work Experience
             </div>
-            <div className="ml-[8px] bg-offwhite w-[1.5px] h-[80%]"></div>
-            <div
+            {/* <div className="ml-[8px] bg-offwhite w-[1.5px] h-[80%]"></div> */}
+            {/* <div
               className="hover:text-green-800 cursor-pointer whitespace-nowrap ml-[10px]"
               onClick={() => {
                 onProjectsClick();
@@ -57,7 +57,7 @@ const Header = forwardRef(
               }}
             >
               Projects
-            </div>
+            </div> */}
             <div className="ml-[8px] bg-offwhite w-[1.5px] h-[80%]"></div>
             <div
               className="hover:text-green-800 cursor-pointer whitespace-nowrap ml-[10px]"
@@ -85,7 +85,7 @@ const Header = forwardRef(
         {isMenuOpen && (
           <div
             ref={menuRef}
-            className="absolute top-10 right-0 bg-offwhite border border-black shadow-lg flex flex-col"
+            className="absolute top-10 right-0 bg-offwhite  text-black border border-black shadow-lg flex flex-col"
           >
             <div
               className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap"
@@ -105,7 +105,7 @@ const Header = forwardRef(
             >
               Work Experience
             </div>
-            <div
+            {/* <div
               className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap"
               onClick={() => {
                 onProjectsClick();
@@ -113,7 +113,7 @@ const Header = forwardRef(
               }}
             >
               Projects
-            </div>
+            </div> */}
             <div
               className="p-2 hover:text-green-800 cursor-pointer whitespace-nowrap"
               onClick={() => {

@@ -1,8 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, useAnimation } from "framer-motion";
 import "./App.css";
-import logo from "./logo.png";
+import trustworthy from "./trustworthy.png";
 import chipotle from "./chipotle.png";
+import umn from './umn.png';
+import ml4gw from './ml4gw.png';
+import skyportal from './skyportal.png';
+import ajlogo from './Logo.png';
+import mcgeehan from './TransparentMcGeehan3.png';
 
 /** 🔹 Hook to detect if screen is large (lg: ≥1024px) */
 function useIsLargeScreen() {
@@ -176,10 +181,11 @@ function Panel({
 
   return (
     <motion.div
-      className="panel absolute top-0 left-1/2 w-[100%] md:w-[80%] lg:w-[60%]
-                 min-h-[400px] md:min-h-[500px] lg:min-h-[600px]
-                 h-auto p-6 flex flex-col items-center justify-center
-                 rounded-2xl bg-green-900 shadow-lg ring-2 ring-green-700 shadow-yellow-300"
+      className={`panel absolute top-0 left-1/2 w-[100%] md:w-[80%] lg:w-[60%]
+                  min-h-[400px] md:min-h-[500px] lg:min-h-[600px]
+                  h-auto p-6 flex flex-col items-center
+                  rounded-2xl bg-panel shadow-lg ring-2 ring-panelhover shadow-sage
+                  ${!item.logo ? "justify-center" : "justify-start"}`}
       style={{
         zIndex: isPoppingOut ? 50 : baseZIndex,
         transformStyle: "preserve-3d",
@@ -194,23 +200,15 @@ function Panel({
           initial={{ opacity: 0, y: 5, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="w-full h-auto flex flex-col items-center justify-center"
+          className="w-full h-auto flex flex-col items-center justify-start"
         >
-          {item.logo && (
-            <img
-              src={item.logo}
-              alt={item.title}
-              className="w-24 mb-4 object-contain"
-            />
-          )}
-          <div className="text-2xl font-bold text-black">{item.title}</div>
-          <div className="text-md italic text-black">{item.role}</div>
-          <div className="text-sm mt-3 text-center text-black">
+        {!item.logo ? (
+        <div className="flex flex-col items-center justify-center h-full text-center px-[10%]">
+          <div className="text-4xl md:text-5xl font-bold">{item.title}</div>
+          <div className="text-lg md:text-xl lg:text-2xl text-black mt-[10%]">
             {item.description}
           </div>
-          {item.date && <div className="mt-3 text-sm text-black">{item.date}</div>}
-
-          <div className="flex mt-6 space-x-6">
+          <div className="flex mt-[10%] space-x-6">
             <button
               onClick={prev}
               className="px-4 py-2 bg-yellow-400 text-green-900 font-semibold rounded-lg shadow hover:bg-yellow-500 transition"
@@ -224,6 +222,53 @@ function Panel({
               Next ▶
             </button>
           </div>
+        </div>
+      ) : ( <>
+          <div className="h-[140px] flex items-center justify-center mb-6">
+            {item.logo && (
+              <img
+                src={item.logo}
+                alt={item.title}
+                className="max-h-full max-w-full object-contain mt-[10%]"
+              />
+            )}
+          </div>
+          <div className="text-2xl md:text-3xl lg:text-4xl font-bold mb-[2%] text-black mt-[5%]">{item.title}</div>
+          <div className="text-lg md:text-xl lg:text-2xl italic text-black mb-[2%]">{item.role}</div>
+          <div className="text-md md:text-lg lg:text-xl mt-3 text-center text-black">
+            {item.description}
+          </div>
+          {item.date && (
+            <div className="mt-3 text-md md:text-lg lg:text-xl italic text-black">
+              {item.title === "McGeehan Construction" ? (
+                <a
+                  href={`https://${item.date}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black italic hover:underline"
+                >
+                  {item.date}
+                </a>
+              ) : (
+                <span>{item.date}</span>
+              )}
+            </div>
+          )}
+          <div className="flex mt-[10%] space-x-6">
+            <button
+              onClick={prev}
+              className="px-4 py-2 bg-yellow-400 text-green-900 font-semibold rounded-lg shadow hover:bg-yellow-500 transition"
+            >
+              ◀ Prev
+            </button>
+            <button
+              onClick={next}
+              className="px-4 py-2 bg-yellow-400 text-green-900 font-semibold rounded-lg shadow hover:bg-yellow-500 transition"
+            >
+              Next ▶
+            </button>
+          </div>
+          </>)}
         </motion.div>
       ) : (
         <div className="w-full h-auto flex flex-col items-center justify-center">
@@ -231,16 +276,16 @@ function Panel({
             <img
               src={item.logo}
               alt={item.title}
-              className="w-24 mb-4 object-contain opacity-80"
+              className="w-24 mb-4 object-contain opacity-80 mt-[20%]"
             />
           )}
-          <div className="text-2xl font-bold text-green-800">{item.title}</div>
-          <div className="text-md italic text-green-700">{item.role}</div>
-          <div className="text-sm mt-3 text-center text-green-900">
+          <div className="text-2xl font-bold text-black/30 mt-[5%]">{item.title}</div>
+          <div className="text-md italic text-black/30 mt-[5%]">{item.role}</div>
+          <div className="text-sm mt-3 text-center text-black/30 mt-[5%]">
             {item.description}
           </div>
           {item.date && (
-            <div className="mt-3 text-sm text-green-600">{item.date}</div>
+            <div className="mt-3 text-sm text-black/30 mt-[5%]">{item.date}</div>
           )}
         </div>
       )}
@@ -279,7 +324,8 @@ function WorkExperience() {
       description:
         "Designed, created, and hosted 11 websites with SEO to improve visibility.",
       date: "May 2024 - Aug 2024",
-      logo: logo,
+      logo: trustworthy,
+      logoWidth: "w-[40%]",
     },
     {
       title: "Chipotle",
@@ -288,19 +334,48 @@ function WorkExperience() {
         "Managed teams in fast-paced environments, promoted to manager after 3 years.",
       date: "May 2022 - Present",
       logo: chipotle,
+      logoWidth: "w-[25%]",
     },
     {
       title: "GopherMatch",
       role: "Full Stack Project",
       description:
         "Built a roommate finder for UMN students using React, Node.js, Express, and MySQL.",
+      date: "October 2023 - August 2024",
+      logo: umn,
+      logoWidth: "w-[25%]",
     },
     {
       title: "ML4GW",
       role: "Research Assistant",
       description:
         "Analyzed black hole mergers, built ML models, and improved reliability with test cases.",
+      date: "November 2023 - May 2025",
+      logo: ml4gw,
+      logoWidth: "w-[25%]",
     },
+    {
+      title: "Skyportal",
+      role: "Research Assistant",
+      description: "Updated user interface and user experience on application used by professional astronomers.",
+      date: "August 2025 - Present",
+      logo: skyportal,
+      logoWidth: "w-[25%]",
+    },
+    {
+      title: "Personal Website",
+      role: "Designer/Programmer",
+      date: "January 2025 - Present",
+      description: "Designed and programmed this website in January 2025. Since then have updated it to what you see now.",
+      logo: ajlogo,
+    },
+    {
+      title: "McGeehan Construction",
+      role: "Designer/Programmer",
+      description: "Designed and programmed website for a Michigan Construction Company.",
+      date: "mcgeehanconstruction.com",
+      logo: mcgeehan,
+    }
   ];
 
   const mod = (n, m) => ((n % m) + m) % m;
@@ -403,9 +478,11 @@ function WorkExperience() {
 
         {/* Panels */}
         <div
-          className="relative w-[80%] min-h-[400px] perspective cursor-grab active:cursor-grabbing"
+          className="relative w-[80%] min-h-[500px] sm:min-h-[500px] md:min-h-[500px] lg:min-h-[500px] 
+                    perspective cursor-grab active:cursor-grabbing"
           onMouseDown={handleMouseDown}
         >
+
           {items.map((item, idx) => {
             let offset = (idx - activeIndex + items.length) % items.length;
             if (offset > items.length / 2) offset -= items.length;
